@@ -1,6 +1,6 @@
 # Mini Système Expert — Triage Médical (Pédagogique)
 
-Système expert de triage médical développé en Python dans le cadre d'un mini-projet IA & Systèmes Experts (ISI Tunis, 2025-2026), en binôme avec Safa Douma.
+Système expert de triage médical développé en Python dans le cadre d'un mini-projet IA & Systèmes Experts (ISI Tunis, 2025-2026).
 
 ## Objectif
 

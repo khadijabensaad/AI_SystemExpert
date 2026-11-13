@@ -1,0 +1,534 @@
+{
+  "scenarios": [
+    {
+      "id": "S-01",
+      "name": "Douleur thoracique isolée",
+      "description": "Adulte de 45 ans avec douleur dans la poitrine.",
+      "facts": {
+        "age": 45,
+        "chest_pain": true,
+        "temperature": 37.0
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-01"
+      ]
+    },
+    {
+      "id": "S-02",
+      "name": "Saturation à 90 %",
+      "description": "Toux et SpO₂ mesurée à 90 %.",
+      "facts": {
+        "age": 60,
+        "cough": true,
+        "spo2": 90,
+        "temperature": 37.8
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-02"
+      ]
+    },
+    {
+      "id": "S-03",
+      "name": "Rhume simple",
+      "description": "Nez qui coule et éternuements sans fièvre.",
+      "facts": {
+        "age": 22,
+        "runny_nose": true,
+        "sneezing": true,
+        "temperature": 37.1,
+        "duration_days": 2
+      },
+      "closed_world": true,
+      "expected_level": "SELF_CARE",
+      "expected_rules": [
+        "R-S-01"
+      ]
+    },
+    {
+      "id": "S-04",
+      "name": "Raideur de nuque fébrile",
+      "description": "Raideur de nuque et fièvre à 39 °C.",
+      "facts": {
+        "age": 19,
+        "stiff_neck": true,
+        "headache": true,
+        "temperature": 39.0
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-04"
+      ]
+    },
+    {
+      "id": "S-05",
+      "name": "Toux fébrile, adulte jeune",
+      "description": "Toux avec fièvre modérée depuis 2 jours.",
+      "facts": {
+        "age": 30,
+        "cough": true,
+        "temperature": 38.5,
+        "duration_days": 2
+      },
+      "closed_world": true,
+      "expected_level": "ROUTINE",
+      "expected_rules": [
+        "R-R-01"
+      ]
+    },
+    {
+      "id": "S-06",
+      "name": "Toux fébrile, patient âgé",
+      "description": "Même tableau qu'en S-05 chez un patient de 72 ans : le facteur âge escalade.",
+      "facts": {
+        "age": 72,
+        "cough": true,
+        "temperature": 38.5,
+        "duration_days": 2
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-R-01",
+        "R-RF-02"
+      ]
+    },
+    {
+      "id": "S-07",
+      "name": "Fièvre isolée sous immunosuppresseurs",
+      "description": "Aucune règle de triage spécifique, mais terrain immunodéprimé.",
+      "facts": {
+        "age": 50,
+        "immunodepressed": true,
+        "temperature": 38.3
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-RF-01"
+      ]
+    },
+    {
+      "id": "S-08",
+      "name": "Brûlures urinaires pendant la grossesse",
+      "description": "Femme enceinte avec brûlures urinaires.",
+      "facts": {
+        "age": 28,
+        "pregnant": true,
+        "dysuria": true,
+        "temperature": 37.2
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-03"
+      ]
+    },
+    {
+      "id": "S-09",
+      "name": "Gastro-entérite avec déshydratation",
+      "description": "Vomissements, diarrhée et signes de déshydratation.",
+      "facts": {
+        "age": 35,
+        "vomiting": true,
+        "diarrhea": true,
+        "dehydration_signs": true,
+        "temperature": 37.6,
+        "duration_days": 2
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-02"
+      ]
+    },
+    {
+      "id": "S-10",
+      "name": "Gastro-entérite simple",
+      "description": "Diarrhée depuis un jour, sans fièvre ni déshydratation.",
+      "facts": {
+        "age": 25,
+        "diarrhea": true,
+        "temperature": 37.0,
+        "duration_days": 1
+      },
+      "closed_world": true,
+      "expected_level": "SELF_CARE",
+      "expected_rules": [
+        "R-S-02"
+      ]
+    },
+    {
+      "id": "S-11",
+      "name": "Céphalée simple",
+      "description": "Mal de tête sans signe d'alerte.",
+      "facts": {
+        "age": 27,
+        "headache": true,
+        "temperature": 36.9,
+        "duration_days": 1
+      },
+      "closed_world": true,
+      "expected_level": "ROUTINE",
+      "expected_rules": [
+        "R-R-03"
+      ]
+    },
+    {
+      "id": "S-12",
+      "name": "Céphalée brutale avec réponse contradictoire",
+      "description": "« Pire mal de tête » coché mais « maux de tête » à non : le moteur corrige par chaînage.",
+      "facts": {
+        "age": 41,
+        "worst_headache": true,
+        "headache": false,
+        "temperature": 37.0
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-05"
+      ]
+    },
+    {
+      "id": "S-13",
+      "name": "Asthmatique essoufflé",
+      "description": "Essoufflement modéré chez un patient asthmatique.",
+      "facts": {
+        "age": 33,
+        "asthma_copd": true,
+        "dyspnea_mild": true,
+        "temperature": 37.0,
+        "spo2": 96
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-R-08",
+        "R-RF-03"
+      ]
+    },
+    {
+      "id": "S-14",
+      "name": "Aucun symptôme",
+      "description": "Le système doit répondre « données insuffisantes » et non « auto-soins ».",
+      "facts": {
+        "age": 30,
+        "temperature": 36.8
+      },
+      "closed_world": true,
+      "expected_level": null,
+      "expected_rules": []
+    },
+    {
+      "id": "S-15",
+      "name": "Fièvre avec taches persistantes",
+      "description": "Fièvre et taches qui ne s'effacent pas à la pression.",
+      "facts": {
+        "age": 8,
+        "temperature": 39.2,
+        "rash_nonblanching": true
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-06"
+      ]
+    },
+    {
+      "id": "S-16",
+      "name": "Conflit rhume / douleur thoracique",
+      "description": "Une règle d'auto-soins et une règle d'urgence se déclenchent ensemble.",
+      "facts": {
+        "age": 52,
+        "runny_nose": true,
+        "sneezing": true,
+        "chest_pain": true,
+        "temperature": 37.0
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-01",
+        "R-S-01"
+      ]
+    },
+    {
+      "id": "S-17",
+      "name": "Fumeur avec toux prolongée",
+      "description": "Toux depuis 25 jours chez un fumeur.",
+      "facts": {
+        "age": 48,
+        "smoker": true,
+        "cough": true,
+        "temperature": 37.0,
+        "duration_days": 25
+      },
+      "closed_world": true,
+      "expected_level": "ROUTINE",
+      "expected_rules": [
+        "R-R-04",
+        "R-RF-07"
+      ]
+    },
+    {
+      "id": "S-18",
+      "name": "Nourrisson fébrile",
+      "description": "Nourrisson de moins d'un an avec 38,5 °C.",
+      "facts": {
+        "age": 0,
+        "temperature": 38.5
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-RF-05"
+      ]
+    },
+    {
+      "id": "S-19",
+      "name": "Fièvre + douleur lombaire",
+      "description": "Fièvre à 38,6 °C et douleur du flanc.",
+      "facts": {
+        "age": 34,
+        "flank_pain": true,
+        "temperature": 38.6,
+        "dysuria": true
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-04"
+      ]
+    },
+    {
+      "id": "S-20",
+      "name": "Tachycardie au repos",
+      "description": "Palpitations avec un pouls à 135 bpm.",
+      "facts": {
+        "age": 30,
+        "heart_rate": 135,
+        "palpitations": true,
+        "temperature": 37.0
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-07"
+      ]
+    },
+    {
+      "id": "S-21",
+      "name": "Mollet gonflé",
+      "description": "Mollet gauche gonflé et douloureux après un long voyage.",
+      "facts": {
+        "age": 56,
+        "calf_swelling": true,
+        "temperature": 37.1
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-06"
+      ]
+    },
+    {
+      "id": "S-22",
+      "name": "Maladie chronique + toux fébrile",
+      "description": "Le facteur « maladie chronique » escalade une infection respiratoire.",
+      "facts": {
+        "age": 58,
+        "chronic": true,
+        "cough": true,
+        "temperature": 38.4,
+        "duration_days": 2
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-R-01",
+        "R-RF-04"
+      ]
+    },
+    {
+      "id": "S-23",
+      "name": "Déficit neurologique",
+      "description": "Faiblesse d'un bras et trouble de la parole.",
+      "facts": {
+        "age": 67,
+        "neuro_deficit": true,
+        "temperature": 36.9
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-03"
+      ]
+    },
+    {
+      "id": "S-24",
+      "name": "Perte de connaissance",
+      "description": "Malaise avec perte de connaissance brève.",
+      "facts": {
+        "age": 40,
+        "syncope": true,
+        "temperature": 36.8
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-07"
+      ]
+    },
+    {
+      "id": "S-25",
+      "name": "Sang dans les selles",
+      "description": "Douleur abdominale modérée et sang dans les selles.",
+      "facts": {
+        "age": 61,
+        "gi_bleeding": true,
+        "abdominal_pain": true,
+        "temperature": 37.0
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-08"
+      ]
+    },
+    {
+      "id": "S-26",
+      "name": "Grossesse + douleur abdominale intense",
+      "description": "Douleur intense pendant la grossesse.",
+      "facts": {
+        "age": 31,
+        "pregnant": true,
+        "abdominal_pain_severe": true,
+        "temperature": 37.1
+      },
+      "closed_world": true,
+      "expected_level": "EMERGENCY",
+      "expected_rules": [
+        "R-EM-09",
+        "R-EM-10"
+      ]
+    },
+    {
+      "id": "S-27",
+      "name": "Fièvre élevée depuis 4 jours",
+      "description": "Fièvre à 39,4 °C depuis 4 jours, toux.",
+      "facts": {
+        "age": 26,
+        "cough": true,
+        "temperature": 39.4,
+        "duration_days": 4
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-01",
+        "R-R-01"
+      ]
+    },
+    {
+      "id": "S-28",
+      "name": "Saturation à 93 %",
+      "description": "Essoufflement modéré, SpO₂ à 93 %.",
+      "facts": {
+        "age": 44,
+        "dyspnea_mild": true,
+        "spo2": 93,
+        "temperature": 37.3
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-05"
+      ]
+    },
+    {
+      "id": "S-29",
+      "name": "Palpitations + essoufflement",
+      "description": "Palpitations avec essoufflement à l'effort.",
+      "facts": {
+        "age": 38,
+        "palpitations": true,
+        "dyspnea_mild": true,
+        "heart_rate": 105,
+        "temperature": 36.9
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-U-09"
+      ]
+    },
+    {
+      "id": "S-30",
+      "name": "Angine fébrile",
+      "description": "Mal de gorge avec 38,7 °C.",
+      "facts": {
+        "age": 17,
+        "sore_throat": true,
+        "temperature": 38.7,
+        "duration_days": 1
+      },
+      "closed_world": true,
+      "expected_level": "ROUTINE",
+      "expected_rules": [
+        "R-R-05"
+      ]
+    },
+    {
+      "id": "S-31",
+      "name": "Douleur abdominale modérée",
+      "description": "Douleur abdominale sans signe de gravité.",
+      "facts": {
+        "age": 29,
+        "abdominal_pain": true,
+        "temperature": 37.0,
+        "duration_days": 1
+      },
+      "closed_world": true,
+      "expected_level": "ROUTINE",
+      "expected_rules": [
+        "R-R-07"
+      ]
+    },
+    {
+      "id": "S-32",
+      "name": "Mal de gorge sans fièvre",
+      "description": "Gorge irritée, pas de fièvre.",
+      "facts": {
+        "age": 24,
+        "sore_throat": true,
+        "temperature": 36.9,
+        "duration_days": 1
+      },
+      "closed_world": true,
+      "expected_level": "SELF_CARE",
+      "expected_rules": [
+        "R-S-03"
+      ]
+    },
+    {
+      "id": "S-33",
+      "name": "Grossesse + fièvre",
+      "description": "Fièvre à 38,2 °C pendant la grossesse.",
+      "facts": {
+        "age": 30,
+        "pregnant": true,
+        "temperature": 38.2
+      },
+      "closed_world": true,
+      "expected_level": "URGENT",
+      "expected_rules": [
+        "R-RF-06"
+      ]
+    }
+  ]
+}

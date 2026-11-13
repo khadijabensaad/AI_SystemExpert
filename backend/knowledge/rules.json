@@ -1,0 +1,1674 @@
+{
+  "version": "2.0.0",
+  "updated_at": "2026-11-13T10:00:00",
+  "disclaimer": "Base de connaissances de démonstration pédagogique. Non validée cliniquement : ne doit pas être utilisée pour un diagnostic réel.",
+  "consistency": [
+    {
+      "id": "C-01",
+      "severity": "warning",
+      "condition": {
+        "all": [
+          {
+            "fact": "worst_headache"
+          },
+          {
+            "fact": "headache",
+            "op": "==",
+            "value": false
+          }
+        ]
+      },
+      "message": "« Céphalée brutale » est déclarée alors que « Maux de tête » est à non. La céphalée brutale implique un mal de tête : la réponse la plus grave est retenue."
+    },
+    {
+      "id": "C-02",
+      "severity": "info",
+      "condition": {
+        "all": [
+          {
+            "fact": "dyspnea_severe"
+          },
+          {
+            "fact": "dyspnea_mild"
+          }
+        ]
+      },
+      "message": "Essoufflement sévère et modéré cochés ensemble : le niveau sévère est retenu."
+    },
+    {
+      "id": "C-03",
+      "severity": "warning",
+      "condition": {
+        "all": [
+          {
+            "fact": "pregnant"
+          },
+          {
+            "any": [
+              {
+                "fact": "age",
+                "op": "<",
+                "value": 10
+              },
+              {
+                "fact": "age",
+                "op": ">",
+                "value": 60
+              }
+            ]
+          }
+        ]
+      },
+      "message": "Grossesse déclarée avec un âge inhabituel : vérifiez la saisie."
+    },
+    {
+      "id": "C-04",
+      "severity": "warning",
+      "condition": {
+        "all": [
+          {
+            "fact": "rash_nonblanching"
+          },
+          {
+            "fact": "rash",
+            "op": "==",
+            "value": false
+          }
+        ]
+      },
+      "message": "Taches persistantes à la pression déclarées alors que « Éruption cutanée » est à non : l'éruption est retenue."
+    },
+    {
+      "id": "C-05",
+      "severity": "info",
+      "condition": {
+        "all": [
+          {
+            "fact": "temperature",
+            "op": ">=",
+            "value": 38
+          },
+          {
+            "fact": "fever_reported",
+            "op": "==",
+            "value": false
+          }
+        ]
+      },
+      "message": "Pas de sensation de fièvre mais la température mesurée est ≥ 38 °C : la mesure prévaut."
+    },
+    {
+      "id": "C-06",
+      "severity": "warning",
+      "condition": {
+        "all": [
+          {
+            "fact": "abdominal_pain_severe"
+          },
+          {
+            "fact": "abdominal_pain",
+            "op": "==",
+            "value": false
+          }
+        ]
+      },
+      "message": "Douleur abdominale intense déclarée alors que « Douleur abdominale » est à non : la douleur intense est retenue."
+    }
+  ],
+  "rules": [
+    {
+      "id": "D-01",
+      "title": "Fièvre",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "fever",
+      "condition": {
+        "any": [
+          {
+            "fact": "temperature",
+            "op": ">=",
+            "value": 38.0
+          },
+          {
+            "all": [
+              {
+                "not": {
+                  "known": "temperature"
+                }
+              },
+              {
+                "fact": "fever_reported"
+              }
+            ]
+          }
+        ]
+      },
+      "explanation": "Fièvre si température mesurée ≥ 38 °C ; sans mesure, la sensation de fièvre déclarée est retenue.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-02",
+      "title": "Fièvre élevée",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "high_fever",
+      "condition": {
+        "fact": "temperature",
+        "op": ">=",
+        "value": 39.0
+      },
+      "explanation": "Fièvre élevée si température ≥ 39 °C.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-03",
+      "title": "Hypothermie",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "hypothermia",
+      "condition": {
+        "fact": "temperature",
+        "op": "<",
+        "value": 35.0
+      },
+      "explanation": "Hypothermie si température < 35 °C.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-04",
+      "title": "Hypoxémie sévère",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "hypoxemia_severe",
+      "condition": {
+        "fact": "spo2",
+        "op": "<",
+        "value": 92
+      },
+      "explanation": "SpO₂ < 92 % : saturation très basse.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-05",
+      "title": "Hypoxémie modérée",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "hypoxemia_moderate",
+      "condition": {
+        "all": [
+          {
+            "fact": "spo2",
+            "op": ">=",
+            "value": 92
+          },
+          {
+            "fact": "spo2",
+            "op": "<",
+            "value": 95
+          }
+        ]
+      },
+      "explanation": "SpO₂ entre 92 et 94 % : saturation à surveiller.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-06",
+      "title": "Tachycardie (adulte)",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "tachycardia",
+      "condition": {
+        "all": [
+          {
+            "fact": "heart_rate",
+            "op": ">",
+            "value": 120
+          },
+          {
+            "any": [
+              {
+                "fact": "age",
+                "op": ">=",
+                "value": 12
+              },
+              {
+                "not": {
+                  "known": "age"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "explanation": "Fréquence cardiaque > 120 bpm au repos chez un patient de 12 ans ou plus (âge inconnu : adulte supposé).",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-07",
+      "title": "Patient âgé",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "elderly",
+      "condition": {
+        "fact": "age",
+        "op": ">=",
+        "value": 65
+      },
+      "explanation": "Âge ≥ 65 ans.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-08",
+      "title": "Nourrisson",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "infant",
+      "condition": {
+        "fact": "age",
+        "op": "<",
+        "value": 1
+      },
+      "explanation": "Âge < 1 an.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-09",
+      "title": "Terrain fragile",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 40,
+      "mode": "definition",
+      "target": "vulnerable",
+      "condition": {
+        "any": [
+          {
+            "fact": "elderly"
+          },
+          {
+            "fact": "infant"
+          },
+          {
+            "fact": "pregnant"
+          },
+          {
+            "fact": "immunodepressed"
+          },
+          {
+            "fact": "chronic"
+          }
+        ]
+      },
+      "explanation": "Terrain fragile : âge extrême, grossesse, immunodépression ou maladie chronique. Ce fait est lui-même déduit d'autres faits déduits (chaînage avant sur deux niveaux).",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-10",
+      "title": "Essoufflement (tout niveau)",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "dyspnea",
+      "condition": {
+        "any": [
+          {
+            "fact": "dyspnea_severe"
+          },
+          {
+            "fact": "dyspnea_mild"
+          }
+        ]
+      },
+      "explanation": "Essoufflement modéré ou sévère.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-11",
+      "title": "Pertes digestives",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "gi_loss",
+      "condition": {
+        "any": [
+          {
+            "fact": "vomiting"
+          },
+          {
+            "fact": "diarrhea"
+          }
+        ]
+      },
+      "explanation": "Vomissements ou diarrhée.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-12",
+      "title": "Symptômes urinaires",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 50,
+      "mode": "definition",
+      "target": "urinary_symptoms",
+      "condition": {
+        "any": [
+          {
+            "fact": "dysuria"
+          },
+          {
+            "fact": "urinary_frequency"
+          }
+        ]
+      },
+      "explanation": "Brûlures urinaires ou envies fréquentes.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-13",
+      "title": "Céphalée implicite",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 60,
+      "mode": "implication",
+      "target": "headache",
+      "condition": {
+        "fact": "worst_headache"
+      },
+      "explanation": "Une céphalée brutale est un mal de tête : si elle est présente, « headache » devient vrai.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-14",
+      "title": "Éruption implicite",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 60,
+      "mode": "implication",
+      "target": "rash",
+      "condition": {
+        "fact": "rash_nonblanching"
+      },
+      "explanation": "Des taches persistantes à la pression sont une éruption.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-15",
+      "title": "Douleur abdominale implicite",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 60,
+      "mode": "implication",
+      "target": "abdominal_pain",
+      "condition": {
+        "fact": "abdominal_pain_severe"
+      },
+      "explanation": "Une douleur abdominale intense est une douleur abdominale.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "D-16",
+      "title": "Au moins un symptôme",
+      "kind": "derive",
+      "category": "derivation",
+      "priority": 30,
+      "mode": "definition",
+      "target": "has_symptom",
+      "condition": {
+        "any": [
+          {
+            "fact": "fever"
+          },
+          {
+            "fact": "syncope"
+          },
+          {
+            "fact": "headache"
+          },
+          {
+            "fact": "neuro_deficit"
+          },
+          {
+            "fact": "confusion"
+          },
+          {
+            "fact": "runny_nose"
+          },
+          {
+            "fact": "sneezing"
+          },
+          {
+            "fact": "stiff_neck"
+          },
+          {
+            "fact": "sore_throat"
+          },
+          {
+            "fact": "chest_pain"
+          },
+          {
+            "fact": "cough"
+          },
+          {
+            "fact": "dyspnea"
+          },
+          {
+            "fact": "palpitations"
+          },
+          {
+            "fact": "abdominal_pain"
+          },
+          {
+            "fact": "gi_loss"
+          },
+          {
+            "fact": "dehydration_signs"
+          },
+          {
+            "fact": "gi_bleeding"
+          },
+          {
+            "fact": "flank_pain"
+          },
+          {
+            "fact": "urinary_symptoms"
+          },
+          {
+            "fact": "vaginal_bleeding"
+          },
+          {
+            "fact": "calf_swelling"
+          },
+          {
+            "fact": "rash"
+          },
+          {
+            "fact": "hypothermia"
+          },
+          {
+            "fact": "hypoxemia_severe"
+          },
+          {
+            "fact": "hypoxemia_moderate"
+          },
+          {
+            "fact": "tachycardia"
+          }
+        ]
+      },
+      "explanation": "Vrai dès qu'un symptôme ou une constante anormale est présent.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-01",
+      "title": "Douleur thoracique",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 100,
+      "condition": {
+        "fact": "chest_pain"
+      },
+      "hypotheses": [
+        "Problème cardio-respiratoire possible (à évaluer)"
+      ],
+      "advice": [
+        "Ne pas rester seul, ne pas conduire soi-même.",
+        "Appeler les secours (190 / SAMU) ou se rendre aux urgences."
+      ],
+      "explanation": "La douleur thoracique est un signe d'alerte : une cause cardiaque doit être écartée sans délai.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-02",
+      "title": "Détresse respiratoire",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 100,
+      "condition": {
+        "any": [
+          {
+            "fact": "dyspnea_severe"
+          },
+          {
+            "fact": "hypoxemia_severe"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Détresse respiratoire possible (à évaluer)"
+      ],
+      "advice": [
+        "Rester assis, respirer calmement.",
+        "Appeler les secours (190 / SAMU) ou se rendre aux urgences."
+      ],
+      "explanation": "Essoufflement sévère ou SpO₂ < 92 % : drapeau rouge respiratoire.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-03",
+      "title": "Déficit neurologique ou confusion",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 100,
+      "condition": {
+        "any": [
+          {
+            "fact": "neuro_deficit"
+          },
+          {
+            "fact": "confusion"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Problème neurologique aigu possible (à évaluer)"
+      ],
+      "advice": [
+        "Noter l'heure de début des symptômes.",
+        "Ne pas conduire soi-même.",
+        "Appeler les secours (190 / SAMU)."
+      ],
+      "explanation": "Un déficit neurologique ou une confusion d'apparition récente est une urgence potentielle.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-04",
+      "title": "Raideur de nuque + fièvre",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 95,
+      "condition": {
+        "all": [
+          {
+            "fact": "stiff_neck"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection sévère possible (à évaluer)"
+      ],
+      "advice": [
+        "Se rendre aux urgences sans attendre."
+      ],
+      "explanation": "L'association raideur de nuque et fièvre est un signe d'alerte d'infection grave.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-05",
+      "title": "Céphalée brutale et inhabituelle",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 95,
+      "condition": {
+        "fact": "worst_headache"
+      },
+      "hypotheses": [
+        "Céphalée grave possible (à évaluer)"
+      ],
+      "advice": [
+        "Se rendre aux urgences sans attendre."
+      ],
+      "explanation": "Un mal de tête brutal, le « pire de sa vie », est un drapeau rouge.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-06",
+      "title": "Fièvre + taches persistantes à la pression",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 100,
+      "condition": {
+        "all": [
+          {
+            "fact": "fever"
+          },
+          {
+            "fact": "rash_nonblanching"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection sévère possible (à évaluer)"
+      ],
+      "advice": [
+        "Appeler les secours (190 / SAMU) immédiatement."
+      ],
+      "explanation": "Fièvre avec taches qui ne s'effacent pas à la pression : signe d'alerte majeur.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-07",
+      "title": "Malaise / perte de connaissance",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 90,
+      "condition": {
+        "fact": "syncope"
+      },
+      "hypotheses": [
+        "Malaise d'origine à déterminer (à évaluer)"
+      ],
+      "advice": [
+        "Allonger la personne, surveiller la respiration.",
+        "Appeler les secours (190 / SAMU)."
+      ],
+      "explanation": "Une perte de connaissance doit être évaluée en urgence.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-08",
+      "title": "Saignement digestif",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 95,
+      "condition": {
+        "fact": "gi_bleeding"
+      },
+      "hypotheses": [
+        "Saignement digestif possible (à évaluer)"
+      ],
+      "advice": [
+        "Se rendre aux urgences sans attendre."
+      ],
+      "explanation": "Du sang dans les vomissements ou les selles est un signe d'alerte.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-09",
+      "title": "Grossesse + saignement ou douleur intense",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 100,
+      "condition": {
+        "all": [
+          {
+            "fact": "pregnant"
+          },
+          {
+            "any": [
+              {
+                "fact": "vaginal_bleeding"
+              },
+              {
+                "fact": "abdominal_pain_severe"
+              }
+            ]
+          }
+        ]
+      },
+      "hypotheses": [
+        "Complication obstétricale possible (à évaluer)"
+      ],
+      "advice": [
+        "Se rendre aux urgences obstétricales sans attendre."
+      ],
+      "explanation": "Pendant la grossesse, un saignement ou une douleur abdominale intense impose une évaluation immédiate.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-EM-10",
+      "title": "Douleur abdominale intense",
+      "kind": "triage",
+      "category": "critical",
+      "level": "EMERGENCY",
+      "priority": 85,
+      "condition": {
+        "fact": "abdominal_pain_severe"
+      },
+      "hypotheses": [
+        "Urgence abdominale possible (à évaluer)"
+      ],
+      "advice": [
+        "Ne pas manger ni boire en attendant l'avis médical.",
+        "Se rendre aux urgences."
+      ],
+      "explanation": "Une douleur abdominale intense peut traduire une urgence chirurgicale.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-U-01",
+      "title": "Fièvre élevée persistante",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 70,
+      "condition": {
+        "all": [
+          {
+            "fact": "high_fever"
+          },
+          {
+            "fact": "duration_days",
+            "op": ">=",
+            "value": 3
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection probable (à évaluer)"
+      ],
+      "advice": [
+        "Hydratation régulière.",
+        "Surveiller la température.",
+        "Consulter un médecin sous 24–48 h."
+      ],
+      "explanation": "Fièvre ≥ 39 °C pendant au moins 3 jours.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-U-02",
+      "title": "Pertes digestives + déshydratation",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 70,
+      "condition": {
+        "all": [
+          {
+            "fact": "gi_loss"
+          },
+          {
+            "fact": "dehydration_signs"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Gastro-entérite avec déshydratation (à évaluer)"
+      ],
+      "advice": [
+        "Boire par petites quantités fréquentes (solution de réhydratation).",
+        "Consulter rapidement."
+      ],
+      "explanation": "Vomissements ou diarrhée avec signes de déshydratation.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-U-03",
+      "title": "Symptômes urinaires pendant la grossesse",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 70,
+      "condition": {
+        "all": [
+          {
+            "fact": "pregnant"
+          },
+          {
+            "fact": "urinary_symptoms"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection urinaire possible (à évaluer)"
+      ],
+      "advice": [
+        "Consulter rapidement (sous 24–48 h)."
+      ],
+      "explanation": "Grossesse + symptômes urinaires : évaluation rapide recommandée.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-U-04",
+      "title": "Fièvre + douleur lombaire",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 75,
+      "condition": {
+        "all": [
+          {
+            "fact": "fever"
+          },
+          {
+            "fact": "flank_pain"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Atteinte urinaire haute possible (à évaluer)"
+      ],
+      "advice": [
+        "Consulter rapidement (sous 24 h)."
+      ],
+      "explanation": "Fièvre + douleur du flanc : peut nécessiter une prise en charge rapide.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-U-05",
+      "title": "Saturation modérément basse",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 75,
+      "condition": {
+        "fact": "hypoxemia_moderate"
+      },
+      "hypotheses": [
+        "Atteinte respiratoire possible (à évaluer)"
+      ],
+      "advice": [
+        "Recontrôler la saturation au repos.",
+        "Consulter rapidement."
+      ],
+      "explanation": "SpO₂ entre 92 et 94 % : évaluation rapide recommandée.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-U-06",
+      "title": "Mollet gonflé et douloureux unilatéral",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 75,
+      "condition": {
+        "fact": "calf_swelling"
+      },
+      "hypotheses": [
+        "Problème veineux possible (à évaluer)"
+      ],
+      "advice": [
+        "Éviter de masser la jambe.",
+        "Consulter rapidement (sous 24 h)."
+      ],
+      "explanation": "Un mollet gonflé, chaud et douloureux d'un seul côté doit être évalué rapidement.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-U-07",
+      "title": "Tachycardie au repos",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 70,
+      "condition": {
+        "fact": "tachycardia"
+      },
+      "hypotheses": [
+        "Trouble du rythme ou réaction à une infection (à évaluer)"
+      ],
+      "advice": [
+        "Se reposer et recontrôler le pouls.",
+        "Consulter rapidement."
+      ],
+      "explanation": "Fréquence cardiaque > 120 bpm au repos.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-U-08",
+      "title": "Hypothermie",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 75,
+      "condition": {
+        "fact": "hypothermia"
+      },
+      "hypotheses": [
+        "Hypothermie (à évaluer)"
+      ],
+      "advice": [
+        "Se réchauffer progressivement.",
+        "Consulter rapidement."
+      ],
+      "explanation": "Température < 35 °C.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-U-09",
+      "title": "Palpitations + essoufflement",
+      "kind": "triage",
+      "category": "combination",
+      "level": "URGENT",
+      "priority": 75,
+      "condition": {
+        "all": [
+          {
+            "fact": "palpitations"
+          },
+          {
+            "fact": "dyspnea"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Trouble du rythme possible (à évaluer)"
+      ],
+      "advice": [
+        "Consulter rapidement (sous 24 h)."
+      ],
+      "explanation": "Palpitations associées à un essoufflement.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-R-01",
+      "title": "Toux + fièvre sans détresse",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 40,
+      "condition": {
+        "all": [
+          {
+            "fact": "cough"
+          },
+          {
+            "fact": "fever"
+          },
+          {
+            "not": {
+              "fact": "dyspnea_severe"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection respiratoire (à évaluer)"
+      ],
+      "advice": [
+        "Repos, hydratation.",
+        "Consulter si persistance au-delà de 3 jours ou aggravation."
+      ],
+      "explanation": "Toux et fièvre sans signe de détresse respiratoire.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-R-02",
+      "title": "Brûlures urinaires sans fièvre",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 40,
+      "condition": {
+        "all": [
+          {
+            "fact": "dysuria"
+          },
+          {
+            "not": {
+              "fact": "fever"
+            }
+          },
+          {
+            "not": {
+              "fact": "flank_pain"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection urinaire simple possible (à évaluer)"
+      ],
+      "advice": [
+        "Boire régulièrement.",
+        "Consulter pour confirmation."
+      ],
+      "explanation": "Symptômes urinaires sans fièvre ni douleur lombaire : souvent moins urgent.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-R-03",
+      "title": "Céphalée sans drapeau rouge",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 35,
+      "condition": {
+        "all": [
+          {
+            "fact": "headache"
+          },
+          {
+            "not": {
+              "fact": "worst_headache"
+            }
+          },
+          {
+            "not": {
+              "fact": "neuro_deficit"
+            }
+          },
+          {
+            "not": {
+              "fact": "stiff_neck"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Céphalée de tension ou migraine possible (à évaluer)"
+      ],
+      "advice": [
+        "Sommeil régulier, hydratation, éviter les déclencheurs.",
+        "Consulter si la céphalée est nouvelle, change ou persiste."
+      ],
+      "explanation": "Céphalée sans signe d'alerte associé.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-R-04",
+      "title": "Symptômes persistants",
+      "kind": "triage",
+      "category": "contextual",
+      "level": "ROUTINE",
+      "priority": 30,
+      "condition": {
+        "all": [
+          {
+            "fact": "has_symptom"
+          },
+          {
+            "fact": "duration_days",
+            "op": ">=",
+            "value": 7
+          }
+        ]
+      },
+      "hypotheses": [
+        "Symptômes prolongés à explorer"
+      ],
+      "advice": [
+        "Prendre rendez-vous avec un médecin traitant."
+      ],
+      "explanation": "Des symptômes qui durent une semaine ou plus justifient une consultation.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-R-05",
+      "title": "Mal de gorge + fièvre",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 35,
+      "condition": {
+        "all": [
+          {
+            "fact": "sore_throat"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Angine possible (à évaluer)"
+      ],
+      "advice": [
+        "Consulter pour un éventuel test rapide."
+      ],
+      "explanation": "Mal de gorge fébrile : une consultation permet de décider d'un test.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-R-06",
+      "title": "Palpitations isolées",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 35,
+      "condition": {
+        "all": [
+          {
+            "fact": "palpitations"
+          },
+          {
+            "not": {
+              "fact": "dyspnea"
+            }
+          },
+          {
+            "not": {
+              "fact": "chest_pain"
+            }
+          },
+          {
+            "not": {
+              "fact": "syncope"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Palpitations à explorer"
+      ],
+      "advice": [
+        "Limiter café et excitants.",
+        "Consulter pour un bilan."
+      ],
+      "explanation": "Palpitations sans signe associé inquiétant.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-R-07",
+      "title": "Douleur abdominale modérée",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 35,
+      "condition": {
+        "all": [
+          {
+            "fact": "abdominal_pain"
+          },
+          {
+            "not": {
+              "fact": "abdominal_pain_severe"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Trouble digestif (à évaluer)"
+      ],
+      "advice": [
+        "Surveiller l'évolution.",
+        "Consulter si la douleur augmente ou persiste."
+      ],
+      "explanation": "Douleur abdominale modérée sans signe de gravité.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-R-08",
+      "title": "Essoufflement modéré",
+      "kind": "triage",
+      "category": "combination",
+      "level": "ROUTINE",
+      "priority": 40,
+      "condition": {
+        "all": [
+          {
+            "fact": "dyspnea_mild"
+          },
+          {
+            "not": {
+              "fact": "dyspnea_severe"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Gêne respiratoire à explorer"
+      ],
+      "advice": [
+        "Consulter pour évaluation.",
+        "Se rendre aux urgences si l'essoufflement s'aggrave au repos."
+      ],
+      "explanation": "Essoufflement à l'effort sans détresse au repos.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-S-01",
+      "title": "Rhume ou allergie probable",
+      "kind": "triage",
+      "category": "self_care",
+      "level": "SELF_CARE",
+      "priority": 10,
+      "condition": {
+        "all": [
+          {
+            "fact": "runny_nose"
+          },
+          {
+            "fact": "sneezing"
+          },
+          {
+            "not": {
+              "fact": "fever"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Rhume ou allergie (hypothèse générale)"
+      ],
+      "advice": [
+        "Repos, hydratation, lavage du nez.",
+        "Consulter si aggravation ou fièvre."
+      ],
+      "explanation": "Nez qui coule + éternuements sans fièvre : souvent bénin.",
+      "source": "Démonstration pédagogique",
+      "version": "1.1",
+      "enabled": true
+    },
+    {
+      "id": "R-S-02",
+      "title": "Troubles digestifs récents sans gravité",
+      "kind": "triage",
+      "category": "self_care",
+      "level": "SELF_CARE",
+      "priority": 10,
+      "condition": {
+        "all": [
+          {
+            "fact": "gi_loss"
+          },
+          {
+            "not": {
+              "fact": "dehydration_signs"
+            }
+          },
+          {
+            "not": {
+              "fact": "fever"
+            }
+          },
+          {
+            "not": {
+              "fact": "gi_bleeding"
+            }
+          },
+          {
+            "fact": "duration_days",
+            "op": "<",
+            "value": 3
+          }
+        ]
+      },
+      "hypotheses": [
+        "Gastro-entérite simple (hypothèse générale)"
+      ],
+      "advice": [
+        "Boire régulièrement par petites quantités.",
+        "Consulter si signes de déshydratation ou persistance."
+      ],
+      "explanation": "Vomissements ou diarrhée depuis moins de 3 jours, sans fièvre ni déshydratation.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-S-03",
+      "title": "Mal de gorge sans fièvre",
+      "kind": "triage",
+      "category": "self_care",
+      "level": "SELF_CARE",
+      "priority": 10,
+      "condition": {
+        "all": [
+          {
+            "fact": "sore_throat"
+          },
+          {
+            "not": {
+              "fact": "fever"
+            }
+          }
+        ]
+      },
+      "hypotheses": [
+        "Irritation de la gorge (hypothèse générale)"
+      ],
+      "advice": [
+        "Boissons chaudes, repos de la voix.",
+        "Consulter si fièvre ou gêne pour avaler."
+      ],
+      "explanation": "Mal de gorge sans fièvre : souvent bénin.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-F-01",
+      "title": "Symptômes sans règle spécifique",
+      "kind": "fallback",
+      "category": "contextual",
+      "level": "ROUTINE",
+      "priority": 1,
+      "condition": {
+        "fact": "has_symptom"
+      },
+      "hypotheses": [
+        "Situation non couverte par la base de règles"
+      ],
+      "advice": [
+        "Aucune règle spécifique ne s'applique : par prudence, demander un avis médical si les symptômes persistent ou inquiètent."
+      ],
+      "explanation": "Règle de repli : s'il y a des symptômes mais qu'aucune règle de triage ne s'applique, le système ne conclut pas à « auto-soins » par défaut.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-01",
+      "title": "Immunodépression + fièvre",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 80,
+      "modifier": {
+        "type": "floor",
+        "level": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "immunodepressed"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Infection sur terrain immunodéprimé (à évaluer)"
+      ],
+      "advice": [
+        "Contacter rapidement l'équipe médicale qui suit le patient."
+      ],
+      "explanation": "Chez un patient immunodéprimé, toute fièvre impose au minimum une évaluation rapide.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-02",
+      "title": "Patient âgé + fièvre",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 70,
+      "modifier": {
+        "type": "escalate",
+        "steps": 1,
+        "max": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "elderly"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [],
+      "advice": [
+        "Patient âgé : surveillance plus rapprochée."
+      ],
+      "explanation": "Après 65 ans, une fièvre augmente le niveau d'un cran (plafonné à « consulter rapidement »).",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-03",
+      "title": "Asthme/BPCO + essoufflement",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 80,
+      "modifier": {
+        "type": "floor",
+        "level": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "asthma_copd"
+          },
+          {
+            "fact": "dyspnea"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Exacerbation respiratoire possible (à évaluer)"
+      ],
+      "advice": [
+        "Suivre le plan d'action prescrit (traitement de crise).",
+        "Consulter rapidement."
+      ],
+      "explanation": "Chez un patient asthmatique ou BPCO, l'essoufflement justifie au minimum une évaluation rapide.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-04",
+      "title": "Maladie chronique + fièvre ou essoufflement",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 60,
+      "modifier": {
+        "type": "escalate",
+        "steps": 1,
+        "max": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "chronic"
+          },
+          {
+            "any": [
+              {
+                "fact": "fever"
+              },
+              {
+                "fact": "dyspnea"
+              }
+            ]
+          }
+        ]
+      },
+      "hypotheses": [],
+      "advice": [
+        "Maladie chronique : informer le médecin traitant."
+      ],
+      "explanation": "Une maladie chronique augmente le niveau d'un cran en cas de fièvre ou d'essoufflement.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-05",
+      "title": "Nourrisson + fièvre",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 90,
+      "modifier": {
+        "type": "floor",
+        "level": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "infant"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Fièvre du nourrisson (à évaluer)"
+      ],
+      "advice": [
+        "Faire examiner le nourrisson rapidement par un médecin."
+      ],
+      "explanation": "Avant 1 an, une fièvre impose au minimum une évaluation rapide.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-06",
+      "title": "Grossesse + fièvre",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 80,
+      "modifier": {
+        "type": "floor",
+        "level": "URGENT"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "pregnant"
+          },
+          {
+            "fact": "fever"
+          }
+        ]
+      },
+      "hypotheses": [
+        "Fièvre pendant la grossesse (à évaluer)"
+      ],
+      "advice": [
+        "Contacter rapidement la sage-femme ou le médecin qui suit la grossesse."
+      ],
+      "explanation": "Pendant la grossesse, une fièvre impose au minimum une évaluation rapide.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    },
+    {
+      "id": "R-RF-07",
+      "title": "Fumeur + toux de plus de 3 semaines",
+      "kind": "modifier",
+      "category": "risk",
+      "priority": 50,
+      "modifier": {
+        "type": "floor",
+        "level": "ROUTINE"
+      },
+      "condition": {
+        "all": [
+          {
+            "fact": "smoker"
+          },
+          {
+            "fact": "cough"
+          },
+          {
+            "fact": "duration_days",
+            "op": ">=",
+            "value": 21
+          }
+        ]
+      },
+      "hypotheses": [
+        "Toux prolongée chez un fumeur (à explorer)"
+      ],
+      "advice": [
+        "Prendre rendez-vous pour un bilan respiratoire."
+      ],
+      "explanation": "Une toux de plus de 3 semaines chez un fumeur justifie toujours une consultation.",
+      "source": "Démonstration pédagogique",
+      "version": "1.0",
+      "enabled": true
+    }
+  ]
+}

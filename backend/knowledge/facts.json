@@ -1,0 +1,62 @@
+{
+  "regions": [
+    {"id": "general", "label": "Général / constantes", "description": "Contexte patient et signes vitaux"},
+    {"id": "head", "label": "Tête", "description": "Céphalées, signes neurologiques, ORL"},
+    {"id": "neck", "label": "Cou", "description": "Raideur de nuque, gorge"},
+    {"id": "chest", "label": "Thorax", "description": "Signes respiratoires et cardiaques"},
+    {"id": "abdomen", "label": "Abdomen", "description": "Signes digestifs"},
+    {"id": "back", "label": "Dos / lombaires", "description": "Douleurs lombaires et du flanc"},
+    {"id": "pelvis", "label": "Bassin", "description": "Signes urinaires et gynécologiques"},
+    {"id": "limbs", "label": "Membres", "description": "Jambes et bras"},
+    {"id": "skin", "label": "Peau", "description": "Éruptions cutanées"}
+  ],
+  "facts": [
+    {"id": "age", "label": "Âge", "type": "number", "unit": "ans", "min": 0, "max": 120, "group": "context", "region": "general", "question": "Quel est l'âge du patient ?"},
+    {"id": "duration_days", "label": "Durée des symptômes", "type": "number", "unit": "jours", "min": 0, "max": 365, "group": "context", "region": "general", "question": "Depuis combien de jours les symptômes durent-ils ?"},
+    {"id": "pregnant", "label": "Grossesse", "type": "bool", "group": "context", "region": "general", "question": "La patiente est-elle enceinte ?"},
+    {"id": "immunodepressed", "label": "Immunodépression", "type": "bool", "group": "context", "region": "general", "question": "Le patient est-il immunodéprimé (chimiothérapie, corticoïdes au long cours, greffe…) ?"},
+    {"id": "chronic", "label": "Maladie chronique", "type": "bool", "group": "context", "region": "general", "question": "Le patient a-t-il une maladie chronique (cardiaque, rénale, diabète…) ?"},
+    {"id": "smoker", "label": "Fumeur", "type": "bool", "group": "context", "region": "general", "question": "Le patient fume-t-il ?"},
+    {"id": "asthma_copd", "label": "Asthme / BPCO", "type": "bool", "group": "context", "region": "general", "question": "Le patient est-il asthmatique ou atteint de BPCO ?"},
+
+    {"id": "temperature", "label": "Température", "type": "number", "unit": "°C", "min": 34, "max": 43, "group": "vitals", "region": "general", "question": "Quelle est la température mesurée ?"},
+    {"id": "spo2", "label": "Saturation SpO₂", "type": "number", "unit": "%", "min": 50, "max": 100, "group": "vitals", "region": "general", "question": "Quelle est la saturation en oxygène (SpO₂) ?"},
+    {"id": "heart_rate", "label": "Fréquence cardiaque", "type": "number", "unit": "bpm", "min": 25, "max": 250, "group": "vitals", "region": "general", "question": "Quelle est la fréquence cardiaque au repos ?"},
+    {"id": "fever_reported", "label": "Sensation de fièvre", "type": "bool", "group": "symptom", "region": "general", "question": "Le patient se sent-il fiévreux (sans mesure possible) ?"},
+    {"id": "syncope", "label": "Malaise / perte de connaissance", "type": "bool", "group": "symptom", "region": "general", "question": "Y a-t-il eu un malaise ou une perte de connaissance ?"},
+
+    {"id": "headache", "label": "Maux de tête", "type": "bool", "group": "symptom", "region": "head", "question": "Le patient a-t-il mal à la tête ?"},
+    {"id": "worst_headache", "label": "Céphalée brutale et inhabituelle", "type": "bool", "group": "symptom", "region": "head", "question": "Est-ce un mal de tête brutal, le « pire de sa vie » ?"},
+    {"id": "neuro_deficit", "label": "Déficit neurologique", "type": "bool", "group": "symptom", "region": "head", "question": "Y a-t-il une faiblesse d'un côté, un trouble de la parole ou de la vision ?"},
+    {"id": "confusion", "label": "Confusion", "type": "bool", "group": "symptom", "region": "head", "question": "Le patient est-il confus ou désorienté ?"},
+    {"id": "runny_nose", "label": "Nez qui coule", "type": "bool", "group": "symptom", "region": "head", "question": "Le patient a-t-il le nez qui coule ?"},
+    {"id": "sneezing", "label": "Éternuements", "type": "bool", "group": "symptom", "region": "head", "question": "Le patient éternue-t-il souvent ?"},
+
+    {"id": "stiff_neck", "label": "Raideur de nuque", "type": "bool", "group": "symptom", "region": "neck", "question": "Le patient a-t-il une raideur de nuque (difficulté à pencher la tête en avant) ?"},
+    {"id": "sore_throat", "label": "Mal de gorge", "type": "bool", "group": "symptom", "region": "neck", "question": "Le patient a-t-il mal à la gorge ?"},
+
+    {"id": "chest_pain", "label": "Douleur thoracique", "type": "bool", "group": "symptom", "region": "chest", "question": "Le patient a-t-il une douleur dans la poitrine ?"},
+    {"id": "cough", "label": "Toux", "type": "bool", "group": "symptom", "region": "chest", "question": "Le patient tousse-t-il ?"},
+    {"id": "dyspnea_severe", "label": "Essoufflement sévère", "type": "bool", "group": "symptom", "region": "chest", "question": "Le patient a-t-il du mal à respirer au repos ou à parler ?"},
+    {"id": "dyspnea_mild", "label": "Essoufflement modéré", "type": "bool", "group": "symptom", "region": "chest", "question": "Le patient est-il essoufflé à l'effort ?"},
+    {"id": "palpitations", "label": "Palpitations", "type": "bool", "group": "symptom", "region": "chest", "question": "Le patient ressent-il des palpitations ?"},
+
+    {"id": "abdominal_pain", "label": "Douleur abdominale modérée", "type": "bool", "group": "symptom", "region": "abdomen", "question": "Le patient a-t-il mal au ventre ?"},
+    {"id": "abdominal_pain_severe", "label": "Douleur abdominale intense", "type": "bool", "group": "symptom", "region": "abdomen", "question": "La douleur abdominale est-elle intense ou insupportable ?"},
+    {"id": "vomiting", "label": "Vomissements", "type": "bool", "group": "symptom", "region": "abdomen", "question": "Le patient vomit-il ?"},
+    {"id": "diarrhea", "label": "Diarrhée", "type": "bool", "group": "symptom", "region": "abdomen", "question": "Le patient a-t-il de la diarrhée ?"},
+    {"id": "dehydration_signs", "label": "Signes de déshydratation", "type": "bool", "group": "symptom", "region": "abdomen", "question": "Y a-t-il des signes de déshydratation (soif intense, peu d'urines, bouche sèche) ?"},
+    {"id": "gi_bleeding", "label": "Sang dans les vomissements ou les selles", "type": "bool", "group": "symptom", "region": "abdomen", "question": "Y a-t-il du sang dans les vomissements ou les selles ?"},
+
+    {"id": "flank_pain", "label": "Douleur lombaire (flanc)", "type": "bool", "group": "symptom", "region": "back", "question": "Le patient a-t-il une douleur dans le bas du dos, sur le côté ?"},
+
+    {"id": "dysuria", "label": "Brûlures urinaires", "type": "bool", "group": "symptom", "region": "pelvis", "question": "Le patient a-t-il des brûlures en urinant ?"},
+    {"id": "urinary_frequency", "label": "Envies fréquentes d'uriner", "type": "bool", "group": "symptom", "region": "pelvis", "question": "Le patient a-t-il des envies fréquentes d'uriner ?"},
+    {"id": "vaginal_bleeding", "label": "Saignement vaginal", "type": "bool", "group": "symptom", "region": "pelvis", "question": "Y a-t-il un saignement vaginal ?"},
+
+    {"id": "calf_swelling", "label": "Mollet gonflé et douloureux (un seul côté)", "type": "bool", "group": "symptom", "region": "limbs", "question": "Un seul mollet est-il gonflé, chaud et douloureux ?"},
+
+    {"id": "rash", "label": "Éruption cutanée", "type": "bool", "group": "symptom", "region": "skin", "question": "Y a-t-il une éruption sur la peau ?"},
+    {"id": "rash_nonblanching", "label": "Taches qui ne s'effacent pas à la pression", "type": "bool", "group": "symptom", "region": "skin", "question": "Les taches restent-elles visibles quand on appuie dessus avec un verre ?"}
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "version": "2.0.0",
+    "date": "2026-11-13T10:00:00",
+    "message": "Version initiale de la base de connaissances",
+    "file": "rules_2.0.0.json",
+    "rules": 54
+  }
+]
